@@ -1,4 +1,4 @@
-// Package nn provides support for basis of Neural Network algorithms.
+// Package nnet provides support for basis of Neural Network algorithms.
 package nnet
 
 import (
