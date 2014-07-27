@@ -13,16 +13,16 @@ NNET is a small collection of neural network algorithms written in the pure Go l
 
 # Examples
 
-## RBM
+## Binary-Binary Restricted Bolztmann Machines on MNIST
 
     cd examples
-    go run rbm_mnist.go -epoch=5 -hidden_units=100 -learning_rate=0.1 -order=1 -output="rbm.json" -persistent -size=20
+    go run rbm_mnist.go -epoch=5 -hidden_units=400 -learning_rate=0.1 -order=1 -output="rbm.json" -persistent -size=20
     
-### Weight visualization
+### Weight visualization]
 
 ![image](http://r9y9.github.io/images/RBM_mnist_Hidden_500_layers.png)
 
-## Feed-Forward Neural Networks
+## Multi-layer Perceptron
 
 ### Training
 
@@ -36,10 +36,13 @@ NNET is a small collection of neural network algorithms written in the pure Go l
 
     Acc. 0.960000 (9600/10000)
 
-# In the future
+# TODO
 
-- Gaussian-Binary RBMs
-- Deep Belief Networks
+- Use linear algebra library such as gonum/matrix or go.matrix
+- GPU powered training
+- Refactor (write more idiomatic codes, speedup, etc.)
+- Tests for all packages
+- More flexibility like pylearn2
  
 # License
 
