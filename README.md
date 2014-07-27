@@ -18,7 +18,7 @@ NNET is a small collection of neural network algorithms written in the pure Go l
     cd examples
     go run rbm_mnist.go -epoch=5 -hidden_units=400 -learning_rate=0.1 -order=1 -output="rbm.json" -persistent -size=20
     
-### Weight visualization]
+### Weight visualization
 
 ![image](http://r9y9.github.io/images/RBM_mnist_Hidden_500_layers.png)
 
