@@ -12,6 +12,10 @@ nnet - Neural Networks in Go
 
     cd examples
     go run rbm_mnist.go -epoch=5 -hidden_units=100 -learning_rate=0.1 -order=1 -output="rbm.json" -persistent -size=20
+    
+### Weight visualization
+
+![image](http://r9y9.github.io/images/RBM_mnist_Hidden_500_layers.png)
 
 ## Feed-Forward Neural Networks
 
