@@ -35,7 +35,7 @@ func (h *HiddenLayer) Init() {
 	}
 }
 
-// Forward transformation
+// Forward prop
 func (h *HiddenLayer) Forward(input []float64) []float64 {
 	return nnet.Forward(input, h.W, h.B)
 }

@@ -73,7 +73,7 @@ func New(numVisibleUnits, numHiddenUnits int) *RBM {
 	return rbm
 }
 
-// InitRBM performes a heuristic parameter initialization.
+// InitParam performes a heuristic parameter initialization.
 func (rbm *RBM) InitParam() {
 	// Init W
 	for i := 0; i < rbm.NumHiddenUnits; i++ {
@@ -238,13 +238,18 @@ func (rbm *RBM) PseudoLogLikelihood(data [][]float64) float64 {
 }
 
 func (rbm *RBM) UnSupervisedObjective(data [][]float64) float64 {
-	subset := nnet.RandomSubset(data, 3000)
-	//return rbm.PseudoLogLikelihood(subset)
-	return rbm.ReconstructionError(subset, rbm.Option.OrderOfGibbsSampling)
+	size := 3000
+	if size > len(data) {
+		size = len(data)
+	}
+	subset := nnet.RandomSubset(data, size)
+	return rbm.PseudoLogLikelihood(subset)
+	// return rbm.ReconstructionError(subset, rbm.Option.OrderOfGibbsSampling)
 }
 
 // Gradient returns gradients of RBM parameters for a given (mini-batch) dataset.
-func (rbm *RBM) Gradient(data [][]float64, miniBatchIndex int) ([][]float64, []float64, []float64) {
+func (rbm *RBM) Gradient(data [][]float64,
+	miniBatchIndex int) ([][]float64, []float64, []float64) {
 	gradW := nnet.MakeMatrix(rbm.NumHiddenUnits, rbm.NumVisibleUnits)
 	gradB := make([]float64, rbm.NumVisibleUnits)
 	gradC := make([]float64, rbm.NumHiddenUnits)
@@ -260,11 +265,13 @@ func (rbm *RBM) Gradient(data [][]float64, miniBatchIndex int) ([][]float64, []f
 		}
 
 		// Perform reconstruction using Gibbs-sampling
-		reconstructedVisible, _ := rbm.Reconstruct(gibbsStart, rbm.Option.OrderOfGibbsSampling)
+		reconstructedVisible, _ := rbm.Reconstruct(gibbsStart,
+			rbm.Option.OrderOfGibbsSampling)
 
 		// keep recostructed visible
 		if rbm.Option.UsePersistent {
-			rbm.PersistentVisibleUnits[persistentIndex] = reconstructedVisible
+			rbm.PersistentVisibleUnits[persistentIndex] =
+				reconstructedVisible
 		}
 
 		// pre-computation that is used in gradient computation
@@ -278,7 +285,8 @@ func (rbm *RBM) Gradient(data [][]float64, miniBatchIndex int) ([][]float64, []f
 		// Gompute gradient of W
 		for i := 0; i < rbm.NumHiddenUnits; i++ {
 			for j := 0; j < rbm.NumVisibleUnits; j++ {
-				gradW[i][j] += p_h_given_v1[i]*v[j] - p_h_given_v2[i]*reconstructedVisible[j]
+				gradW[i][j] += p_h_given_v1[i]*v[j] -
+					p_h_given_v2[i]*reconstructedVisible[j]
 			}
 		}
 
@@ -311,21 +319,25 @@ func (rbm *RBM) Gradient(data [][]float64, miniBatchIndex int) ([][]float64, []f
 	return gradW, gradB, gradC
 }
 
-func (rbm *RBM) UnSupervisedMiniBatchUpdate(batch [][]float64, epoch, miniBatchIndex int) {
+func (rbm *RBM) UnSupervisedMiniBatchUpdate(batch [][]float64,
+	epoch, miniBatchIndex int) {
 	gradW, gradB, gradC := rbm.Gradient(batch, miniBatchIndex)
 
-	momentum := 0.5
+	// TODO fix
+	momentum := 0.0
 	if epoch > 5 {
-		momentum = 0.5
+		momentum = 0.0
 	}
 
 	// Update W
 	for i := 0; i < rbm.NumHiddenUnits; i++ {
 		for j := 0; j < rbm.NumVisibleUnits; j++ {
-			grad := momentum*rbm.GradW[i][j] + rbm.Option.LearningRate*gradW[i][j]
+			grad := momentum*rbm.GradW[i][j] +
+				rbm.Option.LearningRate*gradW[i][j]
 			rbm.W[i][j] += grad
 			if rbm.Option.L2Regularization {
-				rbm.W[i][j] *= (1.0 - rbm.Option.RegularizationRate)
+				rbm.W[i][j] *=
+					(1.0 - rbm.Option.RegularizationRate)
 			}
 			rbm.GradW[i][j] = grad
 		}
@@ -346,7 +358,7 @@ func (rbm *RBM) UnSupervisedMiniBatchUpdate(batch [][]float64, epoch, miniBatchI
 	}
 }
 
-// Train performs Contrastive divergense learning algorithm to learn the RBM model.
+// Train performs Contrastive divergense learning algorithm.
 // The alrogithm is based on (mini-batch) Stochastic Gradient Ascent.
 func (rbm *RBM) Train(data [][]float64, option TrainingOption) error {
 	rbm.Option = option
@@ -358,7 +370,8 @@ func (rbm *RBM) Train(data [][]float64, option TrainingOption) error {
 
 	// Peistent Contrastive learning
 	if rbm.Option.UsePersistent {
-		rbm.PersistentVisibleUnits = nnet.MakeMatrix(len(data), len(data[0]))
+		rbm.PersistentVisibleUnits =
+			nnet.MakeMatrix(len(data), len(data[0]))
 		copy(rbm.PersistentVisibleUnits, data)
 	}
 

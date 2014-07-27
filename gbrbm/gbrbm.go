@@ -1,4 +1,5 @@
-// Package grbm provides support for Gaussian-Binary Restricted Bolztmann Machines.
+// Package grbm provides support for Gaussian-Binary Restricted Bolztmann
+// Machines.
 package gbrbm
 
 import (
@@ -36,8 +37,7 @@ type TrainingOption struct {
 	Monitoring           bool
 }
 
-// New creates new RBM instance. It requires input data and number of
-// hidden units to initialize RBM.
+// New creates new GBRBM instance.
 func New(numVisibleUnits, numHiddenUnits int) *GBRBM {
 	rbm := new(GBRBM)
 	rand.Seed(time.Now().UnixNano())
@@ -53,7 +53,7 @@ func New(numVisibleUnits, numHiddenUnits int) *GBRBM {
 	return rbm
 }
 
-// Init performes a heuristic parameter initialization.
+// InitParam performes a heuristic parameter initialization.
 func (rbm *GBRBM) InitParam() {
 	// Init W
 	for i := 0; i < rbm.NumHiddenUnits; i++ {
@@ -98,7 +98,7 @@ func (rbm *GBRBM) Dump(filename string) error {
 	return nnet.DumpAsJson(filename, rbm)
 }
 
-// Forward performs activity transformation from visible to hidden layer.
+// Forward performs activity propagation from visible to hidden layer.
 func (rbm *GBRBM) Forward(v []float64) []float64 {
 	hidden := make([]float64, rbm.NumHiddenUnits)
 	for i := 0; i < rbm.NumHiddenUnits; i++ {
@@ -153,15 +153,18 @@ func (rbm *GBRBM) Reconstruct(v []float64, numSteps int, useMean bool) []float64
 		// 1. sample hidden units
 		hiddenState := make([]float64, rbm.NumHiddenUnits)
 		for i := 0; i < rbm.NumHiddenUnits; i++ {
-			hiddenState[i] = rbm.Sample_H_Given_V(i, reconstructedVisible)
+			hiddenState[i] =
+				rbm.Sample_H_Given_V(i, reconstructedVisible)
 		}
 		// 2. sample visible units
-		// try to use the mean value instread if learning is unstable
+		// try to use the mean value instread if training is unstable
 		for j := 0; j < rbm.NumVisibleUnits; j++ {
 			if useMean {
-				reconstructedVisible[j] = rbm.Mean_V_Given_H(j, hiddenState)
+				reconstructedVisible[j] =
+					rbm.Mean_V_Given_H(j, hiddenState)
 			} else {
-				reconstructedVisible[j] = rbm.Sample_V_Given_H(j, hiddenState)
+				reconstructedVisible[j] =
+					rbm.Sample_V_Given_H(j, hiddenState)
 			}
 		}
 	}
@@ -201,7 +204,11 @@ func (rbm *GBRBM) FreeEnergy(v []float64) float64 {
 }
 
 func (rbm *GBRBM) UnSupervisedObjective(data [][]float64) float64 {
-	subset := nnet.RandomSubset(data, 3000)
+	size := 3000
+	if size > len(data) {
+		size = len(data)
+	}
+	subset := nnet.RandomSubset(data, size)
 	return rbm.ReconstructionError(subset, rbm.Option.OrderOfGibbsSampling)
 }
 
@@ -214,7 +221,8 @@ func (rbm *GBRBM) P_H_Given_V_Batch(v []float64) []float64 {
 }
 
 // Gradient returns gradients of GBRBM parameters for a given (mini-batch) dataset.
-func (rbm *GBRBM) Gradient(data [][]float64, miniBatchIndex int) ([][]float64, []float64, []float64) {
+func (rbm *GBRBM) Gradient(data [][]float64,
+	miniBatchIndex int) ([][]float64, []float64, []float64) {
 	gradW := nnet.MakeMatrix(rbm.NumHiddenUnits, rbm.NumVisibleUnits)
 	gradB := make([]float64, rbm.NumVisibleUnits)
 	gradC := make([]float64, rbm.NumHiddenUnits)
@@ -230,11 +238,13 @@ func (rbm *GBRBM) Gradient(data [][]float64, miniBatchIndex int) ([][]float64, [
 		}
 
 		// Perform reconstruction using Gibbs-sampling
-		reconstructedVisible := rbm.Reconstruct(gibbsStart, rbm.Option.OrderOfGibbsSampling, rbm.Option.UseMean)
+		reconstructedVisible := rbm.Reconstruct(gibbsStart,
+			rbm.Option.OrderOfGibbsSampling, rbm.Option.UseMean)
 
 		// keep recostructed visible
 		if rbm.Option.UsePersistent {
-			rbm.PersistentVisibleUnits[persistentIndex] = reconstructedVisible
+			rbm.PersistentVisibleUnits[persistentIndex] =
+				reconstructedVisible
 		}
 
 		// pre-computation that is used in gradient computation
@@ -244,7 +254,8 @@ func (rbm *GBRBM) Gradient(data [][]float64, miniBatchIndex int) ([][]float64, [
 		// Gompute gradient of W
 		for i := 0; i < rbm.NumHiddenUnits; i++ {
 			for j := 0; j < rbm.NumVisibleUnits; j++ {
-				gradW[i][j] += p_h_given_v1[i]*v[j] - p_h_given_v2[i]*reconstructedVisible[j]
+				gradW[i][j] += p_h_given_v1[i]*v[j] -
+					p_h_given_v2[i]*reconstructedVisible[j]
 			}
 		}
 
@@ -262,7 +273,8 @@ func (rbm *GBRBM) Gradient(data [][]float64, miniBatchIndex int) ([][]float64, [
 	return rbm.normalizeGradBySizeOfBatch(gradW, gradB, gradC, len(data))
 }
 
-func (rbm *GBRBM) normalizeGradBySizeOfBatch(gradW [][]float64, gradB, gradC []float64, size int) ([][]float64, []float64, []float64) {
+func (rbm *GBRBM) normalizeGradBySizeOfBatch(gradW [][]float64,
+	gradB, gradC []float64, size int) ([][]float64, []float64, []float64) {
 	for i := 0; i < rbm.NumHiddenUnits; i++ {
 		for j := 0; j < rbm.NumVisibleUnits; j++ {
 			gradW[i][j] /= float64(size)
@@ -277,9 +289,11 @@ func (rbm *GBRBM) normalizeGradBySizeOfBatch(gradW [][]float64, gradB, gradC []f
 	return gradW, gradB, gradC
 }
 
-func (rbm *GBRBM) UnSupervisedMiniBatchUpdate(batch [][]float64, epoch, miniBatchIndex int) {
+func (rbm *GBRBM) UnSupervisedMiniBatchUpdate(batch [][]float64,
+	epoch, miniBatchIndex int) {
 	gradW, gradB, gradC := rbm.Gradient(batch, miniBatchIndex)
 
+	// TODO fix
 	momentum := 0.5
 	if epoch > 5 {
 		momentum = 0.7
