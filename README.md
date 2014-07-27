@@ -5,11 +5,16 @@ NNET is a small collection of neural network algorithms written in the pure Go l
 
 # Packages 
 
-- **rbm** - (Binary-Binary) Restricted Boltzmann Machines (RBMs)
-- **gbrbm** - (Gaussian-Binary) RBMs
+- **rbm** - Binary-Binary Restricted Boltzmann Machines (RBMs)
+- **gbrbm** - Gaussian-Binary RBMs
 - **mlp** - Multi-Layer Perceptron (Feed Forward Neural Networks)
 - **mlp3** - Three-Layer Perceptron
 - **dbn** - Deep Belief Nets (in develop stage)
+
+# Install
+
+    go get github.com/r9y9/mnist
+    go get github.com/r9y9/nnet
 
 # Examples
 
