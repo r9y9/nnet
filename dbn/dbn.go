@@ -59,7 +59,7 @@ func (d *DBN) AddLayer(numVisibleUnits, numHiddenUnits int) {
 	}
 
 	// Add new RBM layer
-	newRbm := rbm.NewRBM(numVisibleUnits, numHiddenUnits)
+	newRbm := rbm.New(numVisibleUnits, numHiddenUnits)
 	d.RBMs = append(d.RBMs, newRbm)
 	d.NumLayers++
 }
