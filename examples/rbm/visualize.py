@@ -24,7 +24,7 @@ w,h = int(np.sqrt(M)), int(np.sqrt(M))
 M = w*h
 for i in range(M):
     subplot(w, h, i+1)
-    imshow(W[i].reshape(14, 14), cmap=cm.Greys_r)
+    imshow(W[i].reshape(28, 28), cmap=cm.Greys_r)
     xticks(())
     yticks(())
     
