@@ -23,7 +23,7 @@ func main() {
 	numHiddenUnits := flag.Int("hidden_units", 100, "Number of hidden units")
 	flag.Parse()
 
-	trainingPath := ".../data/train-images-idx3-ubyte"
+	trainingPath := "../data/train-images-idx3-ubyte"
 	file, err := os.Open(trainingPath)
 	if err != nil {
 		log.Fatal(err)
