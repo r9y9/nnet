@@ -6,6 +6,7 @@ NNET is a small collection of neural network algorithms written in pure Golang.
 # Features 
 
 - **rbm** - (Binary-Binary) Restricted Boltzmann Machines (RBMs)
+- **gbrbm** - (Gaussian-Binary) RBMs
 - **mlp** - Multi-Layer Perceptron (Feed Forward Neural Networks)
 - **mlp3** - Three-Layer Perceptron
 
