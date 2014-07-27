@@ -33,7 +33,8 @@ type UnSupervisedOnlineUpdater interface {
 }
 
 type UnSupervisedMiniBatchUpdater interface {
-	UnSupervisedMiniBatchUpdate(input [][]float64, epoch, miniBatchIndex int)
+	UnSupervisedMiniBatchUpdate(input [][]float64, epoch,
+		miniBatchIndex int)
 	UnSupervisedObjectiver
 }
 
@@ -67,7 +68,8 @@ func (t *Trainer) ParseTrainingOption(option BaseTrainingOption) error {
 	return nil
 }
 
-func (s *Trainer) SupervisedOnlineTrain(u SupervisedOnlineUpdater, input, target [][]float64) error {
+func (s *Trainer) SupervisedOnlineTrain(u SupervisedOnlineUpdater,
+	input, target [][]float64) error {
 	for epoch := 0; epoch < s.Option.Epoches; epoch++ {
 		for m := 0; m < len(input); m++ {
 			u.SupervisedOnlineUpdate(input[m], target[m])
@@ -79,11 +81,13 @@ func (s *Trainer) SupervisedOnlineTrain(u SupervisedOnlineUpdater, input, target
 	return nil
 }
 
-func (s *Trainer) SupervisedMiniBatchTrain(u SupervisedMiniBatchUpdater, input, target [][]float64) error {
+func (s *Trainer) SupervisedMiniBatchTrain(u SupervisedMiniBatchUpdater,
+	input, target [][]float64) error {
 	numMiniBatches := len(input) / s.Option.MiniBatchSize
 	for epoch := 0; epoch < s.Option.Epoches; epoch++ {
 		for m := 0; m < numMiniBatches; m++ {
-			b, e := m*s.Option.MiniBatchSize, (m+1)*s.Option.MiniBatchSize
+			b := m * s.Option.MiniBatchSize
+			e := (m + 1) * s.Option.MiniBatchSize
 			u.SupervisedMiniBatchUpdate(input[b:e], target[b:e])
 		}
 		if s.Option.Monitoring {
@@ -93,7 +97,8 @@ func (s *Trainer) SupervisedMiniBatchTrain(u SupervisedMiniBatchUpdater, input, 
 	return nil
 }
 
-func (s *Trainer) UnSupervisedOnlineTrain(u UnSupervisedOnlineUpdater, input [][]float64) error {
+func (s *Trainer) UnSupervisedOnlineTrain(u UnSupervisedOnlineUpdater,
+	input [][]float64) error {
 	for epoch := 0; epoch < s.Option.Epoches; epoch++ {
 		for m := 0; m < len(input); m++ {
 			u.UnSupervisedOnlineUpdate(input[m])
@@ -105,11 +110,13 @@ func (s *Trainer) UnSupervisedOnlineTrain(u UnSupervisedOnlineUpdater, input [][
 	return nil
 }
 
-func (s *Trainer) UnSupervisedMiniBatchTrain(u UnSupervisedMiniBatchUpdater, input [][]float64) error {
+func (s *Trainer) UnSupervisedMiniBatchTrain(u UnSupervisedMiniBatchUpdater,
+	input [][]float64) error {
 	numMiniBatches := len(input) / s.Option.MiniBatchSize
 	for epoch := 0; epoch < s.Option.Epoches; epoch++ {
 		for m := 0; m < numMiniBatches; m++ {
-			b, e := m*s.Option.MiniBatchSize, (m+1)*s.Option.MiniBatchSize
+			b := m * s.Option.MiniBatchSize
+			e := (m + 1) * s.Option.MiniBatchSize
 			u.UnSupervisedMiniBatchUpdate(input[b:e], epoch, m)
 		}
 		if s.Option.Monitoring {
