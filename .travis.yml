@@ -11,5 +11,4 @@ install:
   - go get ./...
 
 script:
- - rm -rf examples
- - go test ./...
+ - go test ./... -v
