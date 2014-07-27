@@ -1,14 +1,15 @@
 NNET - Neural Networks in Go
 ---------------------------------------------------------------
 
-NNET is a small collection of neural network algorithms written in pure Golang. 
+NNET is a small collection of neural network algorithms written in the pure Go language. 
 
-# Features 
+# Packages 
 
 - **rbm** - (Binary-Binary) Restricted Boltzmann Machines (RBMs)
 - **gbrbm** - (Gaussian-Binary) RBMs
 - **mlp** - Multi-Layer Perceptron (Feed Forward Neural Networks)
 - **mlp3** - Three-Layer Perceptron
+- **dbn** - Deep Belief Nets (in develop stage)
 
 # Examples
 
