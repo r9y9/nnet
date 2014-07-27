@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/r9y9/mnist"
 	"github.com/r9y9/nnet"
-	"github.com/r9y9/nnet/mlp"
+	"github.com/r9y9/nnet/mlp3"
 	"log"
 	"os"
 	"time"
@@ -13,7 +13,7 @@ import (
 
 // Classification test using MNIST dataset.
 func Test(filename string) {
-	net, err := mlp.Load(filename)
+	net, err := mlp3.Load(filename)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -46,7 +46,8 @@ func Test(filename string) {
 			sum += 1.0
 		}
 	}
-	fmt.Printf("Acc. %f (%d/%d)\n", sum/float64(len(result)), int(sum), len(result))
+	fmt.Printf("Acc. %f (%d/%d)\n", sum/float64(len(result)),
+		int(sum), len(result))
 }
 
 func main() {
@@ -84,11 +85,11 @@ func main() {
 	target := mnist.PrepareY(labels)
 
 	// Setup Neural Network
-	net := mlp.NewNeuralNetwork(w*h, *numHiddenUnits, 10)
-	option := mlp.TrainingOption{
-		LearningRate:       *learningRate,
-		Epoches:            *epoches, // the number of iterations in SGD
-		Monitoring:         true,
+	net := mlp3.NewNeuralNetwork(w*h, *numHiddenUnits, 10)
+	option := mlp3.TrainingOption{
+		LearningRate: *learningRate,
+		Epoches:      *epoches, // the number of iterations in SGD
+		Monitoring:   true,
 	}
 
 	// Perform training
