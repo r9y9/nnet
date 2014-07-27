@@ -20,7 +20,7 @@ NNET is a small collection of neural network algorithms written in the pure Go l
 
 ## Binary-Binary Restricted Bolztmann Machines on MNIST
 
-    cd examples
+    cd examples/rbm
     go run rbm_mnist.go -h # for help
     go run rbm_mnist.go -epoch=5 -hidden_units=400 -learning_rate=0.1 -order=1 -output="rbm.json" -persistent -size=20
     
@@ -32,11 +32,12 @@ NNET is a small collection of neural network algorithms written in the pure Go l
 
 ### Training
 
-    go run nn_mnist.go -epoch=500000 -hidden_units=100 -learning_rate=0.1 -o="nn.json"
+    cd examples/mlp3
+    go run mlp3_mnist.go -epoch=500000 -hidden_units=100 -learning_rate=0.1 -o="nn.json"
 
 ### Classification
 
-    go run nn_mnist.go -test -m=nn.json
+    go run mlp3_mnist.go -test -m=nn.json
 
 ### Result
 
