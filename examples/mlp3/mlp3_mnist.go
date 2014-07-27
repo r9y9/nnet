@@ -18,8 +18,8 @@ func Test(filename string) {
 		log.Fatal(err)
 	}
 
-	testPath := "./data/t10k-images-idx3-ubyte"
-	targetPath := "./data/t10k-labels-idx1-ubyte"
+	testPath := "../data/t10k-images-idx3-ubyte"
+	targetPath := "../data/t10k-labels-idx1-ubyte"
 
 	file, err := os.Open(testPath)
 	if err != nil {
@@ -64,8 +64,8 @@ func main() {
 		return
 	}
 
-	trainingPath := "./data/train-images-idx3-ubyte"
-	labelPath := "./data/train-labels-idx1-ubyte"
+	trainingPath := "../data/train-images-idx3-ubyte"
+	labelPath := "../data/train-labels-idx1-ubyte"
 	file, err := os.Open(trainingPath)
 	if err != nil {
 		log.Fatal(err)
