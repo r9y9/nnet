@@ -1,4 +1,4 @@
-NNET - Neural Networks in Go
+NNET - Neural Networks in Go [![Build Status](https://travis-ci.org/r9y9/nnet.svg?branch=master)](https://travis-ci.org/r9y9/nnet)
 ---------------------------------------------------------------
 
 NNET is a small collection of neural network algorithms written in the pure Go language. 
