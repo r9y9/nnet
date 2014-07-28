@@ -51,9 +51,11 @@ func Load(filename string) (*NeuralNetwork, error) {
 	return net, nil
 }
 
-// NewNeuralNetwork returns a new network instance with the number of input units,
-// number of hidden units and number output units of the network.
-func NewNeuralNetwork(numInputUnits, numHiddenUnits, numOutputUnits int) *NeuralNetwork {
+// NewNeuralNetwork returns a new network instance with the number of
+// input units, number of hidden units and number output units
+// of the network.
+func NewNeuralNetwork(numInputUnits,
+	numHiddenUnits, numOutputUnits int) *NeuralNetwork {
 	net := new(NeuralNetwork)
 	rand.Seed(time.Now().UnixNano())
 
@@ -128,13 +130,15 @@ func (net *NeuralNetwork) Forward(input []float64) []float64 {
 	return output
 }
 
-func (net *NeuralNetwork) ComputeDelta(predicted, target []float64) ([]float64, []float64) {
+func (net *NeuralNetwork) ComputeDelta(predicted,
+	target []float64) ([]float64, []float64) {
 	outputDelta := make([]float64, len(net.OutputLayer))
 	hiddenDelta := make([]float64, len(net.HiddenLayer))
 
 	// Output Delta
 	for i := 0; i < len(net.OutputLayer); i++ {
-		outputDelta[i] = (predicted[i] - target[i]) * nnet.DSigmoid(predicted[i])
+		outputDelta[i] = (predicted[i] - target[i]) *
+			nnet.DSigmoid(predicted[i])
 	}
 
 	// Hidden Delta
@@ -156,14 +160,16 @@ func (net *NeuralNetwork) Feedback(predicted, target []float64) {
 	// Update Weight of Output layer
 	for i := range net.OutputLayer {
 		for j := 0; j < len(net.HiddenLayer); j++ {
-			net.OutputWeight[j][i] -= net.Option.LearningRate * outputDelta[i] * net.HiddenLayer[j]
+			net.OutputWeight[j][i] -= net.Option.LearningRate *
+				outputDelta[i] * net.HiddenLayer[j]
 		}
 	}
 
 	// Update Weight of Hidden layer
 	for i := 0; i < len(net.HiddenLayer); i++ {
 		for j := range net.InputLayer {
-			net.HiddenWeight[j][i] -= net.Option.LearningRate * hiddenDelta[i] * net.InputLayer[j]
+			net.HiddenWeight[j][i] -= net.Option.LearningRate
+			*hiddenDelta[i] * net.InputLayer[j]
 		}
 	}
 }
@@ -178,7 +184,8 @@ func (net *NeuralNetwork) Objective(input, target []float64) float64 {
 }
 
 // Objective returns the objective function for all data.
-func (net *NeuralNetwork) ObjectiveForAllData(input, target [][]float64) float64 {
+func (net *NeuralNetwork) ObjectiveForAllData(input,
+	target [][]float64) float64 {
 	sum := 0.0
 	for i := 0; i < len(input); i++ {
 		sum += net.Objective(input[i], target[i])
@@ -219,7 +226,8 @@ func (net *NeuralNetwork) SupervisedSGD(input [][]float64, target [][]float64) {
 }
 
 // Train performs supervised network training.
-func (net *NeuralNetwork) Train(input [][]float64, target [][]float64, option TrainingOption) error {
+func (net *NeuralNetwork) Train(input [][]float64,
+	target [][]float64, option TrainingOption) error {
 	err := net.ParseTrainingOption(option)
 	if err != nil {
 		return err
