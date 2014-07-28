@@ -168,8 +168,8 @@ func (net *NeuralNetwork) Feedback(predicted, target []float64) {
 	// Update Weight of Hidden layer
 	for i := 0; i < len(net.HiddenLayer); i++ {
 		for j := range net.InputLayer {
-			net.HiddenWeight[j][i] -= net.Option.LearningRate
-			*hiddenDelta[i] * net.InputLayer[j]
+			net.HiddenWeight[j][i] -= net.Option.LearningRate *
+				hiddenDelta[i] * net.InputLayer[j]
 		}
 	}
 }
