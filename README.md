@@ -13,13 +13,13 @@ NNET is a small collection of neural network algorithms written in the pure Go l
 
 ## Install
 
-    go get github.com/r9y9/mnist
     go get github.com/r9y9/nnet
 
 ## Examples
 
 ### Binary-Binary Restricted Bolztmann Machines on MNIST
 
+    go get github.com/r9y9/mnist
     cd examples/rbm
     go run rbm_mnist.go -h # for help
     go run rbm_mnist.go -epoch=5 -hidden_units=400 -learning_rate=0.1 -order=1 -output="rbm.json" -persistent -size=20
