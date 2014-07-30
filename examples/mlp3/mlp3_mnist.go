@@ -35,7 +35,7 @@ func Test(filename string) {
 	labels := mnist.ReadMNISTLabels(lfile)
 
 	// Convert image to data matrix
-	data := mnist.PrepareX(images)
+	data := mnist.NormalizePixel(mnist.PrepareX(images))
 	target := mnist.PrepareY(labels)
 
 	result := nnet.Test(net, data)
