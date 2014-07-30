@@ -39,6 +39,8 @@ It took 32 minutes to train RBM on my macbook air at 07/28/2014.
     cd examples/mlp3
     go run mlp3_mnist.go -epoch=500000 -hidden_units=100 -learning_rate=0.1 -o="nn.json"
 
+It took 10 minutes to train MLP on my macbook air at 07/30/2014.
+
 #### Classification
 
     go run mlp3_mnist.go -test -m=nn.json
