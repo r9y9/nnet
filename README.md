@@ -43,7 +43,7 @@ It took 32 minutes to train RBM on my macbook air at 07/28/2014.
 
     go run mlp3_mnist.go -test -m=nn.json
 	...
-    Acc. 0.960000 (9600/10000)
+    Acc. 0.971000 (9710/10000)
 
 ## TODO
 
