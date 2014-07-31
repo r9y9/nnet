@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/r9y9/mnist"
 	"github.com/r9y9/nnet"
+	"github.com/r9y9/nnet/dataset/mnist"
 	"github.com/r9y9/nnet/mlp3"
 	"log"
 	"os"
