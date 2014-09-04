@@ -57,7 +57,3 @@ It took 10 minutes to train MLP on my macbook air at 07/30/2014.
 ## License
 
 [MIT](./LICENSE)
-
-## Author
-
-[Ryuichi YAMAMOTO](https://github.com/r9y9)
